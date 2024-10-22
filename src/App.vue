@@ -20,11 +20,18 @@ const addNote = () => {
     text: newNote.value,
     date: new Date(),
     backgroundColor: getRandomColor(),
+    showFullText: false,
   });
   showModal.value = false;
   newNote.value = "";
   errorMessage.value = "";
 };
+const closeModal = () => {
+  showModal.value = false;  // Cierra el modal
+  errorMessage.value = "";  // Limpia el mensaje de error
+  newNote.value = "";
+};
+
 </script>
 
 <template>
@@ -38,8 +45,10 @@ const addNote = () => {
             rows="10"
           ></textarea>
           <p v-if="errorMessage">{{ errorMessage }}</p>
+          <div class="btn">
           <button @click="addNote">Añadir nota</button>
-          <button class="close" @click="showModal = false">Cerrar</button>
+          <button class="close" @click="closeModal">Cerrar</button>
+        </div>
         </div>
     </div>
     <div class="container">
@@ -52,10 +61,9 @@ const addNote = () => {
           v-for="note in notes"
           :key="note.id"
           class="card"
-          :style="{ backgroundColor: note.backgroundColor }"
-        >
-          <p class="main-text">{{ note.text }}</p>
-          <div class="date">{{ note.date.toLocaleDateString("es-ES") }}</div>
+          :style="{ backgroundColor: note.backgroundColor }">
+        <p class="main-text">{{ note.text }}</p>
+        <div class="date">{{ note.date.toLocaleDateString("es-ES") }}</div>
         </div>
       </div>
     </div>
@@ -111,6 +119,7 @@ header button {
 .main-text {
   font-size: 26px;
   margin: 20px 5px 0 10px;
+  word-wrap: break-word; /* Permite que el texto se ajuste dentro de la tarjeta */
 }
 .date {
   font-size: 22px;
@@ -128,8 +137,8 @@ header button {
   z-index: 10; 
  }
 .modal {
-  width: 30%;
-  height: 30%;
+  width: 40%;
+  height: 50%;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -145,19 +154,25 @@ header button {
 }
 .modal textarea {
   width: 90%;
+  height: 50%;
   border: 1px solid black;
   border-radius: 10px;
   margin-bottom: 24px;
 }
+.btn {
+  width: 60%;
+  display: flex;
+  justify-content: space-around;
+  gap: 40px;
+}
 .modal button {
   padding: 10px 20px;
   font-size: 20px;
-  width: 30%;
   border-radius: 8px;
   background-color: rgb(33, 142, 179);
   color: white;
   cursor: pointer;
-  margin-top: 15px;
+  margin-top: 50px;
 }
 .modal .close {
   background-color: rgb(255, 0, 0);
@@ -168,6 +183,7 @@ header button {
   font-size: 19px;
   font-weight: bold;
   color: rgb(255, 0, 0);
+  margin: 0;
 }
 
 @media only screen and (max-width: 600px) {
