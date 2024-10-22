@@ -118,6 +118,7 @@ header button {
 }
 .main-text {
   font-size: 26px;
+  font-weight: bold;
   margin: 20px 5px 0 10px;
   word-wrap: break-word; /* Permite que el texto se ajuste dentro de la tarjeta */
 }
@@ -186,7 +187,7 @@ header button {
   margin: 0;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 608px) {
 h1 {
   margin-bottom: 45px;
   font-size: 40px;
@@ -201,7 +202,7 @@ header button {
 .card {
   width: 130px;
   height: 130px;
-  }
+}
 .main-text {
   font-size: 16px;
   margin: 0;
@@ -216,15 +217,24 @@ header button {
   align-items: center;
   justify-content: center;
   border-radius: 10px;
+  gap: 0px;
+  margin: 0;
 }
 .modal textarea {
   width: 100%;
   padding: 0;
   margin: 0;
 }
+.btn {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
 .modal button {
-  font-size: 16px;
-  width: 40%;
+  font-size: 18px;
+  width: 100%;
+  height: 60%;
   border-radius: 8px;
 }
 .modal p {
@@ -233,7 +243,7 @@ header button {
   color: rgb(255, 0, 0);
 }
 }
-@media (min-width: 600px) and (max-width: 1100px) {
+@media (min-width: 600px) and (max-width: 1210px) {
 h1 {
   font-size: 50px;
   margin-bottom: 45px;
