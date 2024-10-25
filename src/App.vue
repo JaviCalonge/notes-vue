@@ -25,10 +25,11 @@ const addNote = () => {
   showModal.value = false;
   newNote.value = "";
   errorMessage.value = "";
+  localStorage.setItem("new-note", JSON.stringify(this.ejercicios));
 };
 const closeModal = () => {
-  showModal.value = false;  // Cierra el modal
-  errorMessage.value = "";  // Limpia el mensaje de error
+  showModal.value = false;
+  errorMessage.value = "";
   newNote.value = "";
 };
 
@@ -120,7 +121,7 @@ header button {
   font-size: 26px;
   font-weight: bold;
   margin: 20px 5px 0 10px;
-  word-wrap: break-word; /* Permite que el texto se ajuste dentro de la tarjeta */
+  word-wrap: break-word;
 }
 .date {
   font-size: 22px;
@@ -147,13 +148,14 @@ header button {
   justify-content: center;
   border-radius: 10px;
   position: fixed;
-  top: 40%;        /* Posiciona el modal al 50% desde arriba */
-  left: 50%;       /* Posiciona el modal al 50% desde la izquierda */
-  transform: translate(-50%, -50%); /* Ajusta para centrarlo perfectamente */
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Añade un pequeño sombreado */
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   padding: 20px;
 }
 .modal textarea {
+  text-indent: 8px;
+  font-size: 32px;
   width: 90%;
   height: 50%;
   border: 1px solid black;
@@ -221,6 +223,7 @@ header button {
   margin: 0;
 }
 .modal textarea {
+  font-size: 24px;
   width: 100%;
   padding: 0;
   margin: 0;
@@ -229,12 +232,13 @@ header button {
   width: 90%;
   display: flex;
   justify-content: space-between;
-  gap: 10px;
+  gap: 4px;
 }
 .modal button {
   font-size: 18px;
-  width: 100%;
-  height: 60%;
+  width: 50%;
+  height: 50%;
+  padding: 8px;
   border-radius: 8px;
 }
 .modal p {
