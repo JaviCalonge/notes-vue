@@ -5,66 +5,95 @@ const showModal = ref(false);
 const newNote = ref("");
 const errorMessage = ref("");
 const notes = ref([]);
+const editingNote = ref(null);
 
 function getRandomColor() {
   return "hsl(" + Math.random() * 360 + ", 100%, 75%)";
 }
 
+// Cargar notas de localStorage
+if (localStorage.getItem("notes")) {
+  notes.value = JSON.parse(localStorage.getItem("notes"));
+}
+
 const addNote = () => {
   if (newNote.value.length < 10) {
-    return (errorMessage.value =
-      "Escribe al menos 10 palabras para añadir una nota");
+    errorMessage.value = "Notas con un mínimo de 10 letras";
+    return;
+  } 
+  if (newNote.value.length > 80) {
+    errorMessage.value = "Notas con un máximo de 80 letras";
+    return;
   }
-  notes.value.push({
-    id: Math.floor(Math.random() * 1000000),
-    text: newNote.value,
-    date: new Date(),
-    backgroundColor: getRandomColor(),
-    showFullText: false,
-  });
+  // Si hay una nota en edición, actualiza su contenido
+  if (editingNote.value !== null) {
+    const noteIndex = notes.value.findIndex(note => note.id === editingNote.value);
+    if (noteIndex !== -1) {
+      notes.value[noteIndex].text = newNote.value;
+    }
+    editingNote.value = null;
+  } else {
+    notes.value.push({
+      id: Math.floor(Math.random() * 1000000),
+      text: newNote.value,
+      date: new Date(),
+      backgroundColor: getRandomColor(),
+      showFullText: false,
+    });
+  }
+
   showModal.value = false;
   newNote.value = "";
   errorMessage.value = "";
-  localStorage.setItem("new-note", JSON.stringify(this.ejercicios));
+  localStorage.setItem("notes", JSON.stringify(notes.value));
 };
+
+const editNote = (note) => {
+  editingNote.value = note.id;
+  newNote.value = note.text;
+  showModal.value = true;
+};
+
+const deleteNote = (value) => {
+  alert("Vas a eliminar esta nota");
+  showModal.value = false;
+  notes.value.splice(value, 1);
+  localStorage.setItem("gym-vue", JSON.stringify(this.ejercicios));
+};
+
 const closeModal = () => {
   showModal.value = false;
   errorMessage.value = "";
   newNote.value = "";
+  editingNote.value = null;
 };
 
 </script>
 
+
 <template>
   <main>
     <div v-if="showModal" class="overlay">
-        <div v-if="showModal" class="modal">
-          <textarea
-            v-model.trim="newNote"
-            name="note"
-            id="notes"
-            rows="10"
-          ></textarea>
-          <p v-if="errorMessage">{{ errorMessage }}</p>
-          <div class="btn">
-          <button @click="addNote">Añadir nota</button>
+      <div class="modal">
+        <textarea v-model.trim="newNote" name="note" id="notes" rows="10"></textarea>
+        <p v-if="errorMessage">{{ errorMessage }}</p>
+        <div class="btn">
+          <button @click="addNote">{{ editingNote !== null ? 'Guardar cambios' : 'Añadir nota' }}</button>
           <button class="close" @click="closeModal">Cerrar</button>
         </div>
-        </div>
+      </div>
     </div>
     <div class="container">
       <header>
         <h1>Tablón de notas</h1>
-        <button @click="showModal = true">+</button>
+        <button @click="showModal = true; editingNote = null">+</button>
       </header>
       <div class="cards-container">
-        <div
-          v-for="note in notes"
-          :key="note.id"
-          class="card"
-          :style="{ backgroundColor: note.backgroundColor }">
-        <p class="main-text">{{ note.text }}</p>
-        <div class="date">{{ note.date.toLocaleDateString("es-ES") }}</div>
+        <div v-for="note in notes" :key="note.id" class="card" :style="{ backgroundColor: note.backgroundColor }">
+          <p class="main-text">{{ note.text }}</p>
+          <div class="date">{{ new Date(note.date).toLocaleDateString("es-ES") }}
+          <button class="btn-note" @click="editNote(note)">Editar</button>
+          <button class="btn-note" @click="deleteNote(note)">Borrar</button></div>
         </div>
       </div>
     </div>
@@ -90,7 +119,6 @@ header {
 .card {
   width: 225px;
   height: 225px;
-  background-color: rgba(237, 182, 44);
   padding: 10px;
   border-radius: 15px;
   display: flex;
@@ -128,6 +156,13 @@ header button {
   font-style: italic;
   display: flex;
   justify-content: end;
+}
+.btn-note {
+  width: 3rem;
+  border-radius: 50px;
+  border: 1px solid black;
+  background-color: transparent;
+  margin-left: 12px;
 }
 .overlay {
   position: fixed;
@@ -206,11 +241,21 @@ header button {
   height: 130px;
 }
 .main-text {
-  font-size: 16px;
+  font-size: 15px;
+  margin: 0;
+}
+.btn-note {
+  width: 2.7rem;
+  font-size: 8px;
+  border-radius: 50px;
+  border: 1px solid black;
+  background-color: transparent;
   margin: 0;
 }
 .date {
-  font-size: 14px;
+  font-size: 12px;
+  gap: 2px;
+  margin-left: 2px;
 }
 .modal {
   width: 80%;
