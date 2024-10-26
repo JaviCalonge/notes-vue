@@ -237,8 +237,8 @@ header button {
   font-size: 25px;
 }
 .card {
-  width: 130px;
-  height: 130px;
+  width: 150px;
+  height: 150px;
 }
 .main-text {
   font-size: 15px;
