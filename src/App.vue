@@ -237,15 +237,15 @@ header button {
   font-size: 25px;
 }
 .card {
-  width: 150px;
-  height: 150px;
+  width: 148px;
+  height: 148px;
 }
 .main-text {
   font-size: 15px;
   margin: 0;
 }
 .btn-note {
-  width: 2.7rem;
+  width: 2.2rem;
   font-size: 8px;
   border-radius: 50px;
   border: 1px solid black;
@@ -254,7 +254,7 @@ header button {
 }
 .date {
   font-size: 12px;
-  gap: 2px;
+  gap: 8px;
   margin-left: 2px;
 }
 .modal {
